@@ -10,6 +10,7 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    # 사용자 스토리 추가.
     def test_can_start_a_list_and_retriev_it_later(self):
         # 에디스는 투두리스트 웹 어플이 나왔다는 소식을 듣고 확인하러 간다.
         self.browser.get("http://localhost:8000")
