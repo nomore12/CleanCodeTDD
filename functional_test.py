@@ -1,5 +1,9 @@
 from selenium import webdriver
+<<<<<<< HEAD
 from selenium.webdriver.common.keys import Keys
+=======
+from selenium.webdriver.common.keys import keys
+>>>>>>> 1fcdea48c896f91b72fa7bec124e2c31e40f34e9
 import unittest
 
 
@@ -29,7 +33,11 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys("공작깃털 사기")
 
         # 엔터키를 치면 페이지가 갱신되고 작업목록에 "1: 공작깃털 사기" 아이템이 추가된다.
+<<<<<<< HEAD
         input.send_keys(Keys.ENTER)
+=======
+        input.send_keys(keys.ENTER)
+>>>>>>> 1fcdea48c896f91b72fa7bec124e2c31e40f34e9
 
         table = self.browser.find_element_by_id("id_list_table")
         rows = table.find_element_by_id("tr")
