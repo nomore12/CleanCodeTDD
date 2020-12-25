@@ -1,6 +1,9 @@
 # vscode setting
 .vscode/
 
+# 마크다운으로 간단하게 정리 하는것(나중에 블로그에 올릴것)
+markdown/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
