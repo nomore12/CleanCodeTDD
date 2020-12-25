@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import keys
 import unittest
 
 
@@ -20,13 +21,22 @@ class NewVisitorTest(unittest.TestCase):
         self.fail("finish the test")
 
         # 그녀는 바로 작업을 추가하리고 한다.
+        inputbox = self.browser.find_element_by_id("id_new_item")
+        self.assertEqual(inputbox.get_attribute("placeholder"), "작업 아이템 입력")
 
         # "공작깃털 사기"라고 텍스트 상자에 입력한다.
+        inputbox.send_keys("공작깃털 사기")
 
         # 엔터키를 치면 페이지가 갱신되고 작업목록에 "1: 공작깃털 사기" 아이템이 추가된다.
+        input.send_keys(keys.ENTER)
+
+        table = self.browser.find_element_by_id("id_list_table")
+        rows = table.find_element_by_id("tr")
+        self.assertTrue(any(row.text == "1. 공작깃털 사기" for row in row))
 
         # 추가 아이템을 입력할 수 있는 여분의 텍스트 상자가 존재한다.
-        # 다시 "공작깃털을 이용해서 그물 만들기" 라고 입력한다.
+        # 다시 "공작깃털을 이용해서 그룹 만들기" 라고 입력한다.
+        self.fail()
 
         # 페이지는 다시 갱신되고, 두 개 아이템이 목록에 보인다.
         # 에디스는 사이트가 입력한 목록을 저장하고 있는지 궁금하다.
