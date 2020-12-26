@@ -1,12 +1,14 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 import unittest
 import time
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
     def setUp(self):
-        self.browser = webdriver.Chrome("./chromedriver")
+        self.browser = webdriver.Chrome(f"{os.path.abspath('../')}/chromedriver")
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
@@ -15,7 +17,7 @@ class NewVisitorTest(unittest.TestCase):
     # 사용자 스토리 추가.
     def test_can_start_a_list_and_retriev_it_later(self):
         # 에디스는 투두리스트 웹 어플이 나왔다는 소식을 듣고 확인하러 간다.
-        self.browser.get("http://localhost:8000")
+        self.browser.get(self.live_server_url)
 
         # 웹 페이지 타이틀과 헤더가 To-Do를 표시하고 있다.
         self.assertIn("To-Do", self.browser.title)
@@ -54,5 +56,9 @@ class NewVisitorTest(unittest.TestCase):
         # 해당 URL에 접속하면 그녀가 만든 작업 목록이 그대로 있는 것을 확인할 수 있다.
 
 
-if __name__ == "__main__":
-    unittest.main(warnings="ignore")
+# if __name__ == "__main__":
+#     unittest.main(warnings="ignore")
+
+# print(os.getcwd())
+# print(os.path.abspath("../../"))
+# print(os.path.exists(os.path.abspath("../../chromedriver")))
