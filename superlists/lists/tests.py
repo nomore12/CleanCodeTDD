@@ -26,12 +26,10 @@ class HomePageTest(TestCase):
         # 이전 코드에는 하드코딩된 html으로 test했지만, 이번엔 templates의 home.html로 비교.
 
         expected_html = render_to_string("home.html")
-
-        # with open("response.txt", "a") as r:
-        #     r.write(remove_csrf_tag(response.content.decode()))
-        # with open("expected.txt", "a") as e:
-        #     e.write(remove_csrf_tag(expected_html))
-
+        # HTML은 assertHTMLEqual으로 테스트 가능.
+        self.assertHTMLEqual(
+            remove_csrf_tag(response.content.decode()), remove_csrf_tag(expected_html)
+        )
         self.assertEqual(remove_csrf_tag(response.content.decode()), remove_csrf_tag(expected_html))
 
     def test_home_page_can_save_a_POST_request(self):
@@ -39,13 +37,7 @@ class HomePageTest(TestCase):
         request.method = "POST"
         request.POST["item_text"] = "신규 작업 아이템"
         response = home_page(request)
-        # print("-------------------POST-------------------------")
-        # print(response.content.decode())
-        # print("-------------------POST-------------------------")
         self.assertIn("신규 작업 아이템", response.content.decode())
-
-        # expected_html = render_to_string("home.html", {"home.html": "신규 작업 아이템"})
-        # self.assertEqual(remove_csrf_tag(response.content.decode()), remove_csrf_tag(expected_html))
 
 
 class ItemModelTest(TestCase):
