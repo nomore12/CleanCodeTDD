@@ -26,10 +26,6 @@ class HomePageTest(TestCase):
         # 이전 코드에는 하드코딩된 html으로 test했지만, 이번엔 templates의 home.html로 비교.
 
         expected_html = render_to_string("home.html")
-        # HTML은 assertHTMLEqual으로 테스트 가능.
-        self.assertHTMLEqual(
-            remove_csrf_tag(response.content.decode()), remove_csrf_tag(expected_html)
-        )
         self.assertEqual(remove_csrf_tag(response.content.decode()), remove_csrf_tag(expected_html))
 
     # views의 home_page 템플릿만 보여 줄 때
@@ -59,17 +55,7 @@ class HomePageTest(TestCase):
         response = home_page(request)
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response["location"], "/")
-
-    def test_home_page_displays_all_list_items(self):
-        Item.objects.create(text="itemey 1")
-        Item.objects.create(text="itemey 2")
-
-        request = HttpRequest()
-        response = home_page(request)
-
-        self.assertIn("itemey 1", response.content.decode())
-        self.assertIn("itemey 2", response.content.decode())
+        self.assertEqual(response["location"], "/lists/the-only-list-in-the-world/")
 
 
 class ItemModelTest(TestCase):
@@ -90,3 +76,21 @@ class ItemModelTest(TestCase):
 
         self.assertEqual(first_saved_item.text, "첫 번째 아이템")
         self.assertEqual(second_saved_item.text, "두 번째 아이템")
+
+
+class ListViewTest(TestCase):
+    def test_home_page_displays_all_list_items(self):
+        Item.objects.create(text="itemey 1")
+        Item.objects.create(text="itemey 2")
+
+        response = self.client.get("/lists/the-only-list-in-the-world/")
+
+        self.assertContains(response, "itemey 1")
+        self.assertContains(response, "itemey 2")
+
+    def test_uses_list_template(self):
+        response = self.client.get("/lists/the-only-list-in-the-world/")
+        self.assertTemplateUsed(response, "list.html")
+
+    def test_displays_all_items(self):
+        pass
