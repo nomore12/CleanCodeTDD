@@ -26,12 +26,16 @@ class NewVisitorTest(unittest.TestCase):
         inputbox = self.browser.find_element_by_id("id_new_item")
         self.assertEqual(inputbox.get_attribute("placeholder"), "작업 아이템 입력")
 
+        # 1. 첫 번째 입력
         # "공작깃털 사기"라고 텍스트 상자에 입력한다.
         inputbox.send_keys("공작깃털 사기")
-
         # 엔터키를 치면 페이지가 갱신되고 작업목록에 "1: 공작깃털 사기" 아이템이 추가된다.
         inputbox.send_keys(Keys.ENTER)
-        # time.sleep(10)
+
+        # 2. 두 번째 입력
+        inputbox = self.browser.find_element_by_id("id_new_item")
+        inputbox.send_keys("공작깃털을 이용해서 그물 만들기")
+        inputbox.send_keys(Keys.ENTER)
 
         table = self.browser.find_element_by_id("id_list_table")
         rows = table.find_elements_by_tag_name("tr")
