@@ -39,7 +39,6 @@ class NewVisitorTest(LiveServerTestCase):
     def test_can_start_a_list_and_retriev_it_later(self):
         # 에디스는 투두리스트 웹 어플이 나왔다는 소식을 듣고 확인하러 간다.
         self.browser.get(self.live_server_url)
-
         # 웹 페이지 타이틀과 헤더가 To-Do를 표시하고 있다.
         self.assertIn("To-Do", self.browser.title)
         header_text = self.browser.find_element_by_tag_name("h1").text
@@ -53,8 +52,9 @@ class NewVisitorTest(LiveServerTestCase):
         # "공작깃털 사기"라고 텍스트 상자에 입력한다.
         inputbox.send_keys("공작깃털 사기")
         # 엔터키를 치면 페이지가 갱신되고 작업목록에 "1: 공작깃털 사기" 아이템이 추가된다.
+        time.sleep(1)
         inputbox.send_keys(Keys.ENTER)
-        # time.sleep(1)
+        time.sleep(1)
 
         edith_list_url = self.browser.current_url
         self.assertRegex(edith_list_url, "/lists/.+")
@@ -63,7 +63,9 @@ class NewVisitorTest(LiveServerTestCase):
         # 2. 두 번째 입력
         inputbox = self.browser.find_element_by_id("id_new_item")
         inputbox.send_keys("공작깃털을 이용해서 그물 만들기")
+        time.sleep(1)
         inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
 
         table = self.browser.find_element_by_id("id_list_table")
         rows = table.find_elements_by_tag_name("tr")

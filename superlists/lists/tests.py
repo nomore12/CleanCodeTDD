@@ -1,6 +1,6 @@
 import re
 
-from django.test import TestCase, SimpleTestCase
+from django.test import TestCase
 from django.urls import resolve
 from lists.views import home_page
 from django.http import HttpRequest
@@ -27,35 +27,6 @@ class HomePageTest(TestCase):
 
         expected_html = render_to_string("home.html")
         self.assertEqual(remove_csrf_tag(response.content.decode()), remove_csrf_tag(expected_html))
-
-    # views의 home_page 템플릿만 보여 줄 때
-    def test_home_page_only_saves_items_when_necessary(self):
-        request = HttpRequest()
-        home_page(request)
-        self.assertEqual(Item.objects.count(), 0)
-
-    # POST 리퀘스트로 생성된 데이터와 리퀘스트 데이터의 일치여부
-    def test_home_page_can_save_a_POST_request(self):
-        request = HttpRequest()
-        request.method = "POST"
-        request.POST["item_text"] = "신규 작업 아이템"
-
-        response = home_page(request)
-
-        self.assertEqual(Item.objects.count(), 1)
-        new_item = Item.objects.first()
-        self.assertEqual(new_item.text, "신규 작업 아이템")
-
-    # POST 리퀘스트로 데이터를 생성하고, 리다이렉트 성공 여부
-    def test_home_page_redirects_after_POST(self):
-        request = HttpRequest()
-        request.method = "POST"
-        request.POST["item_text"] = "신규 작업 아이템"
-
-        response = home_page(request)
-
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response["location"], "/lists/the-only-list-in-the-world/")
 
 
 class ItemModelTest(TestCase):
@@ -92,5 +63,12 @@ class ListViewTest(TestCase):
         response = self.client.get("/lists/the-only-list-in-the-world/")
         self.assertTemplateUsed(response, "list.html")
 
-    def test_displays_all_items(self):
-        pass
+    def test_saving_a_POST_request(self):
+        self.client.post("/lists/new", data={"item_text": "신규 작업 아이템"})
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, "신규 작업 아이템")
+
+    def test_redirect_after_POST(self):
+        response = self.client.post("/lists/new", data={"item_text": "신규 작업 아이템"})
+        self.assertRedirects(response, "/lists/the-only-list-in-the-world/")
