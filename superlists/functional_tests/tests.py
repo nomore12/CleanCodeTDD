@@ -53,7 +53,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         edith_list_url = self.browser.current_url
         self.assertRegex(edith_list_url, "/lists/.+")
-        self.check_for_row_in_list_table("1. 공작깃털 사기")
+        self.check_for_row_in_list_table("1: 공작깃털 사기")
 
         # 2. 두 번째 입력
         inputbox = self.browser.find_element_by_id("id_new_item")
@@ -64,16 +64,16 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         table = self.browser.find_element_by_id("id_list_table")
         rows = table.find_elements_by_tag_name("tr")
-        self.assertIn("1. 공작깃털 사기", [row.text for row in rows])
-        self.assertIn("2. 공작깃털을 이용해서 그물 만들기", [row.text for row in rows])
+        self.assertIn("1: 공작깃털 사기", [row.text for row in rows])
+        self.assertIn("2: 공작깃털을 이용해서 그물 만들기", [row.text for row in rows])
 
         # 추가 아이템을 입력할 수 있는 여분의 텍스트 상자가 존재한다.
         # 다시 "공작깃털을 이용해서 그룹 만들기" 라고 입력한다.
         # self.fail("finished test")
 
         # 페이지는 다시 갱신되고, 두 개 아이템이 목록에 보인다.
-        self.check_for_row_in_list_table("2. 공작깃털을 이용해서 그물 만들기")
-        self.check_for_row_in_list_table("1. 공작깃털 사기")
+        self.check_for_row_in_list_table("2: 공작깃털을 이용해서 그물 만들기")
+        self.check_for_row_in_list_table("1: 공작깃털 사기")
 
         # 새로운 사용자인 프란시스가 사이트에 접속한다
 
