@@ -2,7 +2,7 @@ import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
-from django.contrib.staticfiles.testing import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 import unittest
 import time
 
@@ -10,17 +10,12 @@ import time
 MAX_WAIT = 1
 
 
-class NewVisitorTest(LiveServerTestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.browser = webdriver.Chrome(f"{os.path.abspath('../')}/chromedriver")
-        cls.browser.implicitly_wait(3)
+class NewVisitorTest(StaticLiveServerTestCase):
+    def setUp(self):
+        self.browser = webdriver.Chrome(f"{os.path.abspath('../')}/chromedriver")
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.browser.quit()
-        super().tearDownClass()
+    def tearDown(self):
+        self.browser.quit()
 
     def check_for_row_in_list_table(self, row_text):
         start_time = time.time()
@@ -110,10 +105,16 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn("공작깃털 사기", page_text)
         self.assertIn("우유 사기", page_text)
 
+    def test_layout_and_styling(self):
+        # 에디스는 메인 페이지를 방문한다.
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
 
-# if __name__ == "__main__":
-#     unittest.main(warnings="ignore")
+        # 그녀는 입력 상자가 가운데 배치된 것을 본다.
 
-# print(os.getcwd())
-# print(os.path.abspath("../../"))
-# print(os.path.exists(os.path.abspath("../../chromedriver")))
+        inputbox = self.browser.find_element_by_id("id_new_item")
+        self.assertAlmostEqual(inputbox.location["x"] + inputbox.size["width"] / 2, 512, delta=10)
+
+        inputbox.send_keys("testing\n")
+        inputbox = self.browser.find_element_by_id("id_new_item")
+        self.assertAlmostEqual(inputbox.location["x"] + inputbox.size["width"] / 2, 512, delta=10)
