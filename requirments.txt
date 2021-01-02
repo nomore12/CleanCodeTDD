@@ -1,6 +1,6 @@
 appdirs==1.4.4
 astroid==2.4.2
-black==20.8b2.dev52+ga522aa4
+black>=20.*
 click==7.1.2
 flake8==3.8.4
 isort==5.6.4
