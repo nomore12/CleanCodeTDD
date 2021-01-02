@@ -12,22 +12,25 @@ MAX_WAIT = 1
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
-    @classmethod
-    def setUpClass(cls):
-        for arg in sys.argv:
-            if "liveserver" in arg:
-                cls.server_url = "http://" + arg.split("=")[1]
-                return
-        super().setUpClass()
-        cls.server_url = cls.live_server_url
+    # @classmethod
+    # def setUpClass(cls):
+    #     for arg in sys.argv:
+    #         if "liveserver" in arg:
+    #             cls.server_url = "http://" + arg.split("=")[1]
+    #             return
+    #     super().setUpClass()
+    #     cls.server_url = cls.live_server_url
 
-    @classmethod
-    def tearDownClass(cls):
-        if cls.server_url == cls.server_url:
-            super().tearDownClass()
+    # @classmethod
+    # def tearDownClass(cls):
+    #     if cls.server_url == cls.server_url:
+    #         super().tearDownClass()
 
     def setUp(self):
         self.browser = webdriver.Chrome(f"{os.path.abspath('../')}/chromedriver")
+        staging_server = os.environ.get("STAGIN_SERVER")
+        if staging_server:
+            self.live_server_url = "http://" + staging_server
 
     def tearDown(self):
         self.browser.quit()
@@ -48,7 +51,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     # 사용자 스토리 추가.
     def test_can_start_a_list_and_retriev_it_later(self):
         # 에디스는 투두리스트 웹 어플이 나왔다는 소식을 듣고 확인하러 간다.
-        self.browser.get(self.server_url)
+        self.browser.get(self.live_server_url)
         # 웹 페이지 타이틀과 헤더가 To-Do를 표시하고 있다.
         self.assertIn("To-Do", self.browser.title)
         header_text = self.browser.find_element_by_tag_name("h1").text
@@ -98,7 +101,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # 프란시스가 홈페이지에 접속한다.
         # 에디스의 리스트는 보이지 않는다.
-        self.browser.get(self.server_url)
+        self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name("body").text
         self.assertNotIn("공작깃털 사기", page_text)
         self.assertNotIn("그물 만들기", page_text)
@@ -122,7 +125,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_layout_and_styling(self):
         # 에디스는 메인 페이지를 방문한다.
-        self.browser.get(self.server_url)
+        self.browser.get(self.live_server_url)
         self.browser.set_window_size(1024, 768)
 
         # 그녀는 입력 상자가 가운데 배치된 것을 본다.
