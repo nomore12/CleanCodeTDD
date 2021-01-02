@@ -27,11 +27,11 @@ class NewVisitorTest(StaticLiveServerTestCase):
     #         super().tearDownClass()
 
     def setUp(self):
-        options = webdriver.ChromeOptions()
-        options.add_argument("headless")
-        options.add_argument("disable-gpu")
-        self.browser = webdriver.Chrome(f"{os.path.abspath('../')}/chromedriver", options=options)
-        staging_server = os.environ.get("STAGIN_SERVER")
+        # options = webdriver.ChromeOptions()
+        # options.add_argument("headless")
+        # options.add_argument("disable-gpu")
+        self.browser = webdriver.Chrome(f"{os.path.abspath('../')}/chromedriver")
+        staging_server = os.environ.get("STAGING_SERVER")
         if staging_server:
             self.live_server_url = "http://" + staging_server
 
