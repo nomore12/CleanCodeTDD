@@ -1,7 +1,9 @@
 appdirs==1.4.4
+asgiref==3.3.1
 astroid==2.4.2
-black>=20.*
+black==20.8b2.dev52+ga522aa4
 click==7.1.2
+Django==3.1.4
 flake8==3.8.4
 isort==5.6.4
 lazy-object-proxy==1.4.3
@@ -12,9 +14,11 @@ pkg-resources==0.0.0
 pycodestyle==2.6.0
 pyflakes==2.2.0
 pylint==2.6.0
+pytz==2020.5
 regex==2020.11.13
 selenium==3.141.0
 six==1.15.0
+sqlparse==0.4.1
 toml==0.10.2
 typed-ast==1.4.1
 typing-extensions==3.7.4.3
